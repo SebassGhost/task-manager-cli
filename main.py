@@ -17,7 +17,8 @@ def show_menu():
     print("\nTask Manager")
     print("1. Add task")
     print("2. List tasks")
-    print("3. Exit")
+    print("3. Toggle task status")
+    print("4. Exit")
 
 def add_task(tasks):
     title = input("Task title: ")
@@ -38,6 +39,24 @@ def list_tasks(tasks):
         status = "✔" if task["completed"] else "✘"
         print(f"{i}. {task['title']} [{status}]")
 
+def toggle_task(tasks):
+    list_tasks(tasks)
+
+    if not tasks:
+        return
+
+    try:
+        index = int(input("Select task number: ")) - 1
+
+        if 0 <= index < len(tasks):
+            tasks[index]["completed"] = not tasks[index]["completed"]
+            save_tasks(tasks)
+            print("Task updated successfully.")
+        else:
+            print("Invalid task number.")
+    except ValueError:
+        print("Please enter a valid number.")
+
 def main():
     tasks = load_tasks()
 
@@ -50,6 +69,8 @@ def main():
         elif option == "2":
             list_tasks(tasks)
         elif option == "3":
+            toggle_task(tasks)
+        elif option == "4":
             print("Goodbye!")
             break
         else:
